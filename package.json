@@ -13,6 +13,7 @@
     "@types/node": "^9.3.0",
     "elasticsearch": "^14.0.0",
     "typescript": "^2.6.2",
-    "web3": "^1.0.0-beta.27"
+    "web3": "^1.0.0-beta.27",
+    "web3-api-helper": "^1.2.1"
   }
 }
