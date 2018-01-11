@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		"target": "ES6",
+		"outDir": "bin",
+		"rootDir": "src",
+		"module": "commonjs",
+
+		"sourceMap": true,
+		"declaration": true,
+		"skipLibCheck": true,
+		"removeComments": true,
+		"skipDefaultLibCheck": true
+	},
+	"exclude": [
+		"bin",
+		"../node_modules"
+	]
+}

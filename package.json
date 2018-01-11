@@ -1,0 +1,18 @@
+{
+  "name": "ethereum.explorer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/elasticsearch": "^5.0.19",
+    "@types/node": "^9.3.0",
+    "elasticsearch": "^14.0.0",
+    "typescript": "^2.6.2",
+    "web3": "^1.0.0-beta.27"
+  }
+}
