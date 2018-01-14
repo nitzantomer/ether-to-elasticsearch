@@ -1,4 +1,5 @@
 import Web3 = require("web3");
+import dateFormat = require("dateformat");
 import Web3Helper = require("web3-api-helper");
 const web3Helper = new Web3Helper();
 
@@ -19,7 +20,7 @@ type ProcessedTransaction = Transaction & {
 
 type BulkEntryIndex = {
 	index: {
-		_index: "transactions";
+		_index: string;
 		_type: "transaction";
 		_id: string;
 	}
@@ -101,7 +102,7 @@ function processTransaction(transaction: Transaction, date: string): ProcessedTr
 function createBulkEntry(transaction: ProcessedTransaction): [BulkEntryIndex, ProcessedTransaction] {
 	return [{
 		index: {
-			_index: "transactions",
+			_index: `transactions-${ dateFormat(new Date(), "yyyy-mm-dd") }`,
 			_type: "transaction",
 			_id: transaction.hash
 		}
