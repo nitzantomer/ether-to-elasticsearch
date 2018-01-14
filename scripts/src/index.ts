@@ -94,12 +94,12 @@ function processTransaction(transaction: Transaction, date: string): ProcessedTr
 			decimals: 18
 		};
 
-		overrides.coin = token.coin;
+		overrides.coin = token.symbol;
 		overrides.coinName = token.name;
 		overrides.to = decoded.params.to;
 		overrides.value = normalizeNumber(decoded.params.value, token.decimals) as string & number;
 
-		if (decoded.method.name.startsWith("transferFrom(") {
+		if (decoded.method.name.startsWith("transferFrom(")) {
 			overrides.from = decoded.params.from;
 		}
 	}
@@ -115,6 +115,18 @@ function createBulkEntry(transaction: ProcessedTransaction): [BulkEntryIndex, Pr
 			_id: transaction.hash
 		}
 	}, transaction];
+}
+
+function getErrorMessage(error: any): string {
+	if (error instanceof Error) {
+		return error.message;
+	}
+
+	if (typeof error === "string") {
+		return error;
+	}
+
+	return error.toString();
 }
 
 let currentBlock: Block;
@@ -134,8 +146,16 @@ const elasticsearchClient = new elasticsearch.Client({
 		}
 	]*/
 });
+
 const timer = setInterval(async () => {
-	const block = await getBlock();
+	let block;
+	try {
+		block = await getBlock();
+	} catch (e) {
+		console.log("failed to retrieve last block: ", getErrorMessage(e));
+		return;
+	}
+
 	if (currentBlock && block.number === currentBlock.number) {
 		return;
 	}
