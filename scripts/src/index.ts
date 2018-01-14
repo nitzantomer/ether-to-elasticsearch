@@ -31,7 +31,7 @@ type Token = {
 	decimals: number;
 }
 
-const NODE_ADDRESS = "http://138.197.100.166:8545";
+const NODE_ADDRESS = `http://${process.env.PARITY}`;
 const TOKENS = (() => {
 	let all = require("../../tokens-eth--small.json") as Array<Token>;
 	return new Map<string, Token>(all.map(item => [item.address, item] as [string, Token]));
@@ -111,7 +111,7 @@ function createBulkEntry(transaction: ProcessedTransaction): [BulkEntryIndex, Pr
 let currentBlock: Block;
 const web3 = new Web3(new Web3.providers.HttpProvider(NODE_ADDRESS));
 const elasticsearchClient = new elasticsearch.Client({
-	host: "174.138.51.204:9200",
+	host: process.env.ELASTICSEARCH,
 	/*log: [
 		{
 			type: "file",

@@ -10,3 +10,9 @@ npm install
 npm run build
 node scripts/bin/index.js
 ```
+
+## Docker
+```
+docker-compose up
+```
+Then in your browser navigate to `http://localhost:5601`

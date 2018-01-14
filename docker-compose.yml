@@ -1,0 +1,19 @@
+version: "2"
+services:
+  elasticsearch-kibana:
+    image: nshou/elasticsearch-kibana
+    ports:
+      - 5601:5601
+      - 9200:9200
+
+  node:
+    build: .
+    image: node-script
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - "NODE_ENV=production"
+      - "ELASTICSEARCH=elasticsearch-kibana:9200"
+      - "PARITY=138.197.100.166:8545"
+    depends_on:
+      - "elasticsearch-kibana"
