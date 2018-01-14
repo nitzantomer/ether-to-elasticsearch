@@ -63,7 +63,7 @@ function normalizeNumber(num: number | string, decimals: number): number {
 }
 
 function shouldDecode(input: string | null) {
-	return input && input !== "0x" && input !== "0x00";
+	return input && input.slice(2).replace(/0/g, "");
 }
 
 function decode(input: string | null) {
@@ -75,24 +75,26 @@ function decode(input: string | null) {
 }
 
 function processTransaction(transaction: Transaction, date: string): ProcessedTransaction {
-	const token = TOKENS.get(transaction.to) || {
-		symbol: "ETH",
-		name: "Ether",
-		decimals: 18
-	};
 	const decoded = decode(transaction.input);
 	const overrides = {
 		date,
 		decodedInput: decoded,
-		coin: token.symbol,
-		coinName: token.name,
+		coin: "ETH",
+		coinName: "Ether",
 		value: normalizeNumber(transaction.value, 18),
 		gasPrice: normalizeNumber(transaction.gasPrice, 9)
 	} as Partial<ProcessedTransaction>;
 
 	if (decoded && decoded.method.name.startsWith("transfer(")) {
+    const token = TOKENS.get(transaction.to) || {
+      symbol: "<UNK>",
+      name: "Unknown",
+      decimals: 18
+    };
 		overrides.to = decoded.params.to;
 		overrides.value = normalizeNumber(decoded.params.value, token.decimals) as string & number;
+    overrides.coin = token.coin;
+    overrides.coinName = token.name;
 	}
 
 	return Object.assign({}, transaction, overrides) as ProcessedTransaction;
