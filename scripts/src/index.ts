@@ -14,6 +14,7 @@ type ProcessedTransaction = Transaction & {
 	function: string;
 	params: any;
 	decodedInput: any;
+	sender: string;	// message sender incase of transferFrom from != sender
 };
 
 type BulkEntryIndex = {
@@ -78,23 +79,29 @@ function processTransaction(transaction: Transaction, date: string): ProcessedTr
 	const decoded = decode(transaction.input);
 	const overrides = {
 		date,
-		decodedInput: decoded,
 		coin: "ETH",
 		coinName: "Ether",
+		decodedInput: decoded,
+		sender: transaction.from,
 		value: normalizeNumber(transaction.value, 18),
 		gasPrice: normalizeNumber(transaction.gasPrice, 9)
 	} as Partial<ProcessedTransaction>;
 
-	if (decoded && decoded.method.name.startsWith("transfer(")) {
-    const token = TOKENS.get(transaction.to) || {
-      symbol: "<UNK>",
-      name: "Unknown",
-      decimals: 18
-    };
+	if (decoded && decoded.method.name.startsWith("transfer")) {
+		const token = TOKENS.get(transaction.to) || {
+			symbol: "<UNK>",
+			name: "Unknown",
+			decimals: 18
+		};
+
+		overrides.coin = token.coin;
+		overrides.coinName = token.name;
 		overrides.to = decoded.params.to;
 		overrides.value = normalizeNumber(decoded.params.value, token.decimals) as string & number;
-    overrides.coin = token.coin;
-    overrides.coinName = token.name;
+
+		if (decoded.method.name.startsWith("transferFrom(") {
+			overrides.from = decoded.params.from;
+		}
 	}
 
 	return Object.assign({}, transaction, overrides) as ProcessedTransaction;
