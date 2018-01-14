@@ -50,21 +50,12 @@ async function getBlock(blockId?: BlockType): Promise<Block> {
 	return await web3.eth.getBlock(blockId, true);
 }
 
-async function getTransactions(): Promise<Transaction[]> {
-	let block = await getBlock();
-	return block.transactions;
-}
-
 function normalizeNumber(num: number | string, decimals: number): number {
 	if (typeof num === "string") {
 		num = Number(num);
 	}
 
 	return num / Math.pow(10, decimals);
-}
-
-function shouldDecode(input: string | null) {
-	return input && input.slice(2).replace(/0/g, "");
 }
 
 function decode(input: string | null) {
@@ -129,42 +120,11 @@ function getErrorMessage(error: any): string {
 	return error.toString();
 }
 
-let currentBlock: Block;
-const web3 = new Web3(new Web3.providers.HttpProvider(NODE_ADDRESS));
-const elasticsearchClient = new elasticsearch.Client({
-	host: process.env.ELASTICSEARCH,
-	/*log: [
-		{
-			type: "file",
-			level: "error",
-			path: "logs/elasticsearch.error.log"
-		},
-		{
-			type: "file",
-			level: "trace",
-			path: "logs/elasticsearch.log"
-		}
-	]*/
-});
+async function processBlock(block: Block) {
+	console.log(`analizying block #${ block.number }`);
 
-const timer = setInterval(async () => {
-	let block;
-	try {
-		block = await getBlock();
-	} catch (e) {
-		console.log("failed to retrieve last block: ", getErrorMessage(e));
-		return;
-	}
-
-	if (currentBlock && block.number === currentBlock.number) {
-		return;
-	}
-
-	currentBlock = block;
-	console.log(`analizying block #${ currentBlock.number }`);
-
-	const originalTransactions = await getTransactions();
-	const date = new Date(currentBlock.timestamp * 1000).toISOString();
+	const originalTransactions = block.transactions;
+	const date = new Date(block.timestamp * 1000).toISOString();
 
 	console.log(`\tcontaining ${ originalTransactions.length } transactions`);
 
@@ -182,4 +142,43 @@ const timer = setInterval(async () => {
 			console.log("\tbulk sent successfully");
 		}
 	});
+}
+
+let currentBlockNumber: number;
+const web3 = new Web3(new Web3.providers.HttpProvider(NODE_ADDRESS));
+
+console.log(`connecting to elasticsearch at: ${ process.env.ELASTICSEARCH }`);
+const elasticsearchClient = new elasticsearch.Client({
+	host: process.env.ELASTICSEARCH,
+	/*log: [
+		{
+			type: "file",
+			level: "error",
+			path: "logs/elasticsearch.error.log"
+		},
+		{
+			type: "file",
+			level: "trace",
+			path: "logs/elasticsearch.log"
+		}
+	]*/
+});
+
+const timer = setInterval(async () => {
+	console.log("\nchecking last block")
+	const latestBlockNumber = await getLastBlockNumber();
+
+	if (!currentBlockNumber) {
+		currentBlockNumber = latestBlockNumber - 1;
+	}
+
+	for (let i = currentBlockNumber + 1; i <= latestBlockNumber; i++) {
+		try {
+			await processBlock(await getBlock(i));
+			currentBlockNumber = i;
+		} catch (e) {
+			console.log("failed to retrieve last block: ", getErrorMessage(e));
+			return;
+		}
+	}
 }, 10000);
