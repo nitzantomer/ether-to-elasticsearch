@@ -1,22 +1,18 @@
-import Web3 = require("web3");
-import dateFormat = require("dateformat");
-import Web3Helper = require("web3-api-helper");
-const web3Helper = new Web3Helper();
-
 import * as elasticsearch from "elasticsearch";
-import { Block, BlockType, Transaction } from "web3/types";
+import { getErrorMessage } from "./utils";
+import { processBlock, getLastBlockNumber, ProcessedTransaction } from "./processor";
 
-type ProcessedTransaction = Transaction & {
-	date: string;
-	value: number;
-	gasPrice: number;
-	coin: string;
-	coinName: string;
-	function: string;
-	params: any;
-	decodedInput: any;
-	sender: string;	// message sender incase of transferFrom from != sender
-};
+import dateFormat = require("dateformat");
+const pjson = require("../../package.json");
+const VERSION = pjson.version as string;
+
+import commander = require("commander");
+declare module "commander" {
+	interface ICommand {
+		startBlock?: string;
+		endBlock?: string;
+	}
+}
 
 type BulkEntryIndex = {
 	index: {
@@ -24,79 +20,6 @@ type BulkEntryIndex = {
 		_type: "transaction";
 		_id: string;
 	}
-}
-
-type Token = {
-	name: string;
-	symbol: string;
-	address: string;
-	decimals: number;
-}
-
-const NODE_ADDRESS = `http://${process.env.PARITY}`;
-const TOKENS = (() => {
-	let all = require("../../tokens-eth--small.json") as Array<Token>;
-	return new Map<string, Token>(all.map(item => [item.address, item] as [string, Token]));
-})() as Map<string, Token>;
-
-async function getLastBlockNumber(): Promise<number> {
-	return await web3.eth.getBlockNumber();
-}
-
-async function getBlock(blockId?: BlockType): Promise<Block> {
-	if (!blockId) {
-		blockId = await getLastBlockNumber();
-	}
-
-	return await web3.eth.getBlock(blockId, true);
-}
-
-function normalizeNumber(num: number | string, decimals: number): number {
-	if (typeof num === "string") {
-		num = Number(num);
-	}
-
-	return num / Math.pow(10, decimals);
-}
-
-function decode(input: string | null) {
-	try {
-		return web3Helper.decodeMethod(input);
-	} catch(e) {
-		return null;
-	}
-}
-
-function processTransaction(transaction: Transaction, date: string): ProcessedTransaction {
-	const decoded = decode(transaction.input);
-	const overrides = {
-		date,
-		coin: "ETH",
-		coinName: "Ether",
-		decodedInput: decoded,
-		sender: transaction.from,
-		value: normalizeNumber(transaction.value, 18),
-		gasPrice: normalizeNumber(transaction.gasPrice, 9)
-	} as Partial<ProcessedTransaction>;
-
-	if (decoded && decoded.method.name.startsWith("transfer")) {
-		const token = TOKENS.get(transaction.to) || {
-			symbol: "<UNK>",
-			name: "Unknown",
-			decimals: 18
-		};
-
-		overrides.coin = token.symbol;
-		overrides.coinName = token.name;
-		overrides.to = decoded.params.to;
-		overrides.value = normalizeNumber(decoded.params.value, token.decimals) as string & number;
-
-		if (decoded.method.name.startsWith("transferFrom(")) {
-			overrides.from = decoded.params.from;
-		}
-	}
-
-	return Object.assign({}, transaction, overrides) as ProcessedTransaction;
 }
 
 function createBulkEntry(transaction: ProcessedTransaction): [BulkEntryIndex, ProcessedTransaction] {
@@ -109,29 +32,9 @@ function createBulkEntry(transaction: ProcessedTransaction): [BulkEntryIndex, Pr
 	}, transaction];
 }
 
-function getErrorMessage(error: any): string {
-	if (error instanceof Error) {
-		return error.message;
-	}
-
-	if (typeof error === "string") {
-		return error;
-	}
-
-	return error.toString();
-}
-
-async function processBlock(block: Block) {
-	console.log(`analizying block #${ block.number }`);
-
-	const originalTransactions = block.transactions;
-	const date = new Date(block.timestamp * 1000).toISOString();
-
-	console.log(`\tcontaining ${ originalTransactions.length } transactions`);
-
-	const processedTransactions = originalTransactions.map(transaction => processTransaction(transaction, date));
-	const bulkBody = processedTransactions
-		.map(transaction => createBulkEntry(transaction))
+function postTransactions(transactions: ProcessedTransaction[]) {
+	const bulkBody = transactions
+		.map(createBulkEntry)
 		.reduce((a, b) => a.concat(b), []);
 
 	elasticsearchClient.bulk({
@@ -145,8 +48,25 @@ async function processBlock(block: Block) {
 	});
 }
 
-let currentBlockNumber: number;
-const web3 = new Web3(new Web3.providers.HttpProvider(NODE_ADDRESS));
+async function processBlocks(start: number, end: number) {
+	const transactions = [] as ProcessedTransaction[];
+
+	for (let i = start; i < end; i++) {
+		try {
+			transactions.push(...await processBlock(i));
+		} catch (e) {
+			console.log("failed to retrieve last block: ", getErrorMessage(e));
+		}
+	}
+
+	return transactions;
+}
+
+commander
+	.version(VERSION)
+	.option("--start-block [number]", "The block number to start with")
+	.option("--end-block [number]", "The block number to stop at")
+	.parse(process.argv);
 
 console.log(`connecting to elasticsearch at: ${ process.env.ELASTICSEARCH }`);
 const elasticsearchClient = new elasticsearch.Client({
@@ -165,21 +85,45 @@ const elasticsearchClient = new elasticsearch.Client({
 	]*/
 });
 
-const timer = setInterval(async () => {
-	console.log("\nchecking last block")
+async function iterator(current: number, end: number | null): Promise<number> {
 	const latestBlockNumber = await getLastBlockNumber();
 
-	if (!currentBlockNumber) {
-		currentBlockNumber = latestBlockNumber - 1;
-	}
-
-	for (let i = currentBlockNumber + 1; i <= latestBlockNumber; i++) {
+	end = Math.min(latestBlockNumber, end || latestBlockNumber);
+	while (current <= end) {
 		try {
-			await processBlock(await getBlock(i));
-			currentBlockNumber = i;
+			await processBlock(current);
+			current++;
 		} catch (e) {
-			console.log("failed to retrieve last block: ", getErrorMessage(e));
-			return;
+			console.log(`failed to retrieve last block: ${ getErrorMessage(e) }`);
+			return current;
 		}
 	}
-}, 10000);
+
+	return current;
+}
+
+async function main() {
+	let resolvePromise: Function;
+	const promise = new Promise<void>(resolve => {
+		resolvePromise = resolve;
+	});
+
+	const endBlock = Number(commander.endBlock) || null;
+	const startBlock = Number(commander.startBlock) || null;
+
+	let lastProcessed = startBlock || await getLastBlockNumber();
+	const thread = async () => {
+		lastProcessed = await iterator(lastProcessed, endBlock);
+
+		if (endBlock == null || lastProcessed < endBlock) {
+			setTimeout(thread, 10000);
+		} else {
+			resolvePromise();
+		}
+	}
+	await thread();
+
+	return promise;
+}
+
+main().then(() => console.log("finished"));
