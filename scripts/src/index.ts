@@ -169,11 +169,11 @@ const timer = setInterval(async () => {
 	console.log("\nchecking last block")
 	const latestBlockNumber = await getLastBlockNumber();
 
-	if (!currentBlockNumber) {
+	if (!currentBlockNumber) { // set to startBlockNumber
 		currentBlockNumber = latestBlockNumber - 1;
 	}
 
-	for (let i = currentBlockNumber + 1; i <= latestBlockNumber; i++) {
+	for (let i = currentBlockNumber + 1; i <= Math.min(latestBlockNumber, endBlockNumber); i++) {
 		try {
 			await processBlock(await getBlock(i));
 			currentBlockNumber = i;
@@ -182,4 +182,5 @@ const timer = setInterval(async () => {
 			return;
 		}
 	}
+	if (currentBlockNumber >= endBlockNumber) { exit(0); }
 }, 10000);
