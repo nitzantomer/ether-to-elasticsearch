@@ -16,3 +16,7 @@ node scripts/bin/index.js
 docker-compose up
 ```
 Then in your browser navigate to `http://localhost:5601`
+
+## ElasticSearch Setup
+Run the `./put_mapping.sh` script to create index template mapping.
+Open kibana management panel > `Saved Objects` > `import` and then choose `kibana_export.json`.
