@@ -1,0 +1,63 @@
+{
+  "template": "transactions-*",
+  "mappings": {
+    "transaction": {
+      "properties": {
+        "blockHash": {
+          "type": "keyword"
+        },
+        "coin": {
+          "type": "keyword"
+        },
+        "coinName": {
+          "type": "keyword"
+        },
+        "chainId": {
+          "type": "keyword"
+        },
+        "creates": {
+          "type": "keyword"
+        },
+        "from": {
+          "type": "keyword"
+        },
+        "sender": {
+          "type": "keyword"
+        },
+        "hash": {
+          "type": "keyword"
+        },
+        "input": {
+          "type": "keyword"
+        },
+        "publicKey": {
+          "type": "keyword"
+        },
+        "to": {
+          "type": "keyword"
+        },
+        "gasPrice": {
+          "type": "double"
+        },
+        "gas": {
+          "type": "double"
+        },
+        "value": {
+          "type": "double"
+        },
+        "blockNumber": {
+          "type": "long"
+        },
+        "transactionIndex": {
+          "type": "long"
+        },
+        "nonce": {
+          "type": "long"
+        },
+        "date": {
+          "type": "date"
+        }
+      }
+    }
+  }
+}
