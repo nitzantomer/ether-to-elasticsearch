@@ -2,7 +2,6 @@ import * as elasticsearch from "elasticsearch";
 import { getErrorMessage } from "./utils";
 import { processBlock, getLastBlockNumber, ProcessedTransaction } from "./processor";
 
-import dateFormat = require("dateformat");
 const pjson = require("../../package.json");
 const VERSION = pjson.version as string;
 
@@ -25,7 +24,7 @@ type BulkEntryIndex = {
 function createBulkEntry(transaction: ProcessedTransaction): [BulkEntryIndex, ProcessedTransaction] {
 	return [{
 		index: {
-			_index: `transactions-${ dateFormat(new Date(), "yyyy-mm-dd") }`,
+			_index: `transactions-${ transaction.date.split('T')[0] }`,
 			_type: "transaction",
 			_id: transaction.hash
 		}
