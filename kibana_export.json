@@ -12,7 +12,7 @@
       "version": 1,
       "timeRestore": false,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"filter\":[{\"meta\":{\"index\":\"AWDnD3Qy1gLJ-qL6EiQr\",\"type\":\"phrase\",\"key\":\"coin.keyword\",\"value\":\"KIN\",\"disabled\":true,\"negate\":false,\"alias\":null},\"query\":{\"match\":{\"coin.keyword\":{\"query\":\"KIN\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"index\":\"AWDnD3Qy1gLJ-qL6EiQr\",\"type\":\"phrase\",\"key\":\"coin.keyword\",\"value\":\"FUN\",\"disabled\":true,\"negate\":false,\"alias\":null},\"query\":{\"match\":{\"coin.keyword\":{\"query\":\"FUN\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"query\":{\"match_all\":{}}}],\"highlightAll\":true,\"version\":true}"
+        "searchSourceJSON": "{\"filter\":[{\"meta\":{\"index\":\"AWD_ZYFk1gLJ-qL6EiR6\",\"type\":\"phrase\",\"key\":\"coin\",\"value\":\"KIN\",\"disabled\":true,\"negate\":false,\"alias\":null},\"query\":{\"match\":{\"coin\":{\"query\":\"KIN\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"index\":\"AWD_ZYFk1gLJ-qL6EiR6\",\"type\":\"phrase\",\"key\":\"coin\",\"value\":\"FUN\",\"disabled\":true,\"negate\":false,\"alias\":null},\"query\":{\"match\":{\"coin\":{\"query\":\"FUN\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"query\":{\"match_all\":{}}}],\"highlightAll\":true,\"version\":true}"
       }
     }
   },
@@ -35,7 +35,7 @@
       ],
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"AWDnD3Qy1gLJ-qL6EiQr\",\"highlightAll\":true,\"version\":true,\"query\":{\"match_all\":{}},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"AWD_ZYFk1gLJ-qL6EiR6\",\"highlightAll\":true,\"version\":true,\"query\":{\"match_all\":{}},\"filter\":[]}"
       }
     }
   },
@@ -49,7 +49,7 @@
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"AWDnD3Qy1gLJ-qL6EiQr\",\"query\":{\"match_all\":{}},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"AWD_ZYFk1gLJ-qL6EiR6\",\"query\":{\"match_all\":{}},\"filter\":[]}"
       }
     }
   },
@@ -58,12 +58,12 @@
     "_type": "visualization",
     "_source": {
       "title": "Top recipients by total ether",
-      "visState": "{\"title\":\"Top recipients by total ether\",\"type\":\"pie\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":false,\"type\":\"pie\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"value\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"to.keyword\",\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "visState": "{\"title\":\"Top recipients by total ether\",\"type\":\"pie\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":false,\"type\":\"pie\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"value\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"to\",\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
       "uiStateJSON": "{}",
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"AWDnD3Qy1gLJ-qL6EiQr\",\"query\":{\"query_string\":{\"query\":\"coin:ETH\",\"analyze_wildcard\":true}},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"AWD_ZYFk1gLJ-qL6EiR6\",\"query\":{\"query_string\":{\"query\":\"coin:ETH\",\"analyze_wildcard\":true}},\"filter\":[]}"
       }
     }
   },
@@ -72,12 +72,12 @@
     "_type": "visualization",
     "_source": {
       "title": "Top recipients by total KIN",
-      "visState": "{\"title\":\"Top recipients by total KIN\",\"type\":\"pie\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":false,\"type\":\"pie\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"value\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"to.keyword\",\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "visState": "{\"title\":\"Top recipients by total KIN\",\"type\":\"pie\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":false,\"type\":\"pie\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"value\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"to\",\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
       "uiStateJSON": "{}",
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"AWDnD3Qy1gLJ-qL6EiQr\",\"query\":{\"query_string\":{\"query\":\"coin:KIN\",\"analyze_wildcard\":true}},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"AWD_ZYFk1gLJ-qL6EiR6\",\"query\":{\"query_string\":{\"query\":\"coin:KIN\",\"analyze_wildcard\":true}},\"filter\":[]}"
       }
     }
   },
@@ -91,7 +91,7 @@
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"AWDnD3Qy1gLJ-qL6EiQr\",\"query\":{\"match_all\":{}},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"AWD_ZYFk1gLJ-qL6EiR6\",\"query\":{\"match_all\":{}},\"filter\":[]}"
       }
     }
   },
@@ -100,12 +100,12 @@
     "_type": "visualization",
     "_source": {
       "title": "Top Tokens by number of transactions",
-      "visState": "{\"title\":\"Top Tokens by number of transactions\",\"type\":\"pie\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":false,\"type\":\"pie\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"coin.keyword\",\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "visState": "{\"title\":\"Top Tokens by number of transactions\",\"type\":\"pie\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":false,\"type\":\"pie\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"coin\",\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
       "uiStateJSON": "{}",
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"AWDnD3Qy1gLJ-qL6EiQr\",\"query\":{\"query_string\":{\"query\":\"NOT coin:ETH\",\"analyze_wildcard\":true}},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"AWD_ZYFk1gLJ-qL6EiR6\",\"query\":{\"query_string\":{\"query\":\"NOT coin:ETH\",\"analyze_wildcard\":true}},\"filter\":[]}"
       }
     }
   },
@@ -119,7 +119,7 @@
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"AWDnD3Qy1gLJ-qL6EiQr\",\"query\":{\"query_string\":{\"query\":\"_exists_:decodedInput.method\",\"analyze_wildcard\":true}},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"AWD_ZYFk1gLJ-qL6EiR6\",\"query\":{\"query_string\":{\"query\":\"_exists_:decodedInput.method\",\"analyze_wildcard\":true}},\"filter\":[]}"
       }
     }
   },
@@ -128,12 +128,12 @@
     "_type": "visualization",
     "_source": {
       "title": "Top Tokens",
-      "visState": "{\"title\":\"Top Tokens\",\"type\":\"tagcloud\",\"params\":{\"scale\":\"linear\",\"orientation\":\"single\",\"minFontSize\":18,\"maxFontSize\":72,\"type\":\"tagcloud\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"coin.keyword\",\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "visState": "{\"title\":\"Top Tokens\",\"type\":\"tagcloud\",\"params\":{\"scale\":\"linear\",\"orientation\":\"single\",\"minFontSize\":18,\"maxFontSize\":72,\"type\":\"tagcloud\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"coin\",\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
       "uiStateJSON": "{}",
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"AWDnD3Qy1gLJ-qL6EiQr\",\"query\":{\"query_string\":{\"query\":\"NOT coin:ETH\",\"analyze_wildcard\":true}},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"AWD_ZYFk1gLJ-qL6EiR6\",\"query\":{\"query_string\":{\"query\":\"NOT coin:ETH\",\"analyze_wildcard\":true}},\"filter\":[]}"
       }
     }
   },
@@ -142,12 +142,12 @@
     "_type": "visualization",
     "_source": {
       "title": "Top recipients by number of transactions",
-      "visState": "{\"title\":\"Top recipients by number of transactions\",\"type\":\"pie\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":false,\"type\":\"pie\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"to.keyword\",\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "visState": "{\"title\":\"Top recipients by number of transactions\",\"type\":\"pie\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":false,\"type\":\"pie\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"to\",\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
       "uiStateJSON": "{}",
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"AWDnD3Qy1gLJ-qL6EiQr\",\"query\":{\"match_all\":{}},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"AWD_ZYFk1gLJ-qL6EiR6\",\"query\":{\"match_all\":{}},\"filter\":[]}"
       }
     }
   },
@@ -156,12 +156,12 @@
     "_type": "visualization",
     "_source": {
       "title": "Top ETH senders",
-      "visState": "{\"title\":\"Top ETH senders\",\"type\":\"pie\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":false,\"type\":\"pie\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"value\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"from.keyword\",\"size\":10,\"order\":\"desc\",\"orderBy\":\"_term\"}}],\"listeners\":{}}",
+      "visState": "{\"title\":\"Top ETH senders\",\"type\":\"pie\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":false,\"type\":\"pie\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"value\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"from\",\"size\":10,\"order\":\"desc\",\"orderBy\":\"_term\"}}],\"listeners\":{}}",
       "uiStateJSON": "{}",
       "description": "",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"AWDnD3Qy1gLJ-qL6EiQr\",\"query\":{\"query_string\":{\"query\":\"coin:ETH\",\"analyze_wildcard\":true}},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"AWD_ZYFk1gLJ-qL6EiR6\",\"query\":{\"query_string\":{\"query\":\"coin:ETH\",\"analyze_wildcard\":true}},\"filter\":[]}"
       }
     }
   },
@@ -170,13 +170,13 @@
     "_type": "visualization",
     "_source": {
       "title": "ETH Big Spenders",
-      "visState": "{\"title\":\"ETH Big Spenders\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMeticsAtAllLevels\":false,\"sort\":{\"columnIndex\":null,\"direction\":null},\"showTotal\":false,\"totalFunc\":\"sum\",\"type\":\"table\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"value\",\"customLabel\":\"max ETH\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"from.keyword\",\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"from address\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{\"customLabel\":\"#transactions\"}},{\"id\":\"4\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"value\",\"customLabel\":\"total ETH\"}}],\"listeners\":{}}",
+      "visState": "{\"title\":\"ETH Big Spenders\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMeticsAtAllLevels\":false,\"sort\":{\"columnIndex\":null,\"direction\":null},\"showTotal\":false,\"totalFunc\":\"sum\",\"type\":\"table\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"value\",\"customLabel\":\"max ETH\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"from\",\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"from address\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{\"customLabel\":\"#transactions\"}},{\"id\":\"4\",\"enabled\":true,\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"value\",\"customLabel\":\"total ETH\"}}],\"listeners\":{}}",
       "uiStateJSON": "{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}",
       "description": "",
       "savedSearchId": "AWDl7PAZ1gLJ-qL6EhrH",
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"filter\":[{\"meta\":{\"index\":\"AWDnD3Qy1gLJ-qL6EiQr\",\"negate\":false,\"disabled\":false,\"alias\":null,\"type\":\"phrase\",\"key\":\"coin.keyword\",\"value\":\"ETH\"},\"query\":{\"match\":{\"coin.keyword\":{\"query\":\"ETH\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}]}"
+        "searchSourceJSON": "{\"filter\":[{\"meta\":{\"index\":\"AWD_ZYFk1gLJ-qL6EiR6\",\"negate\":false,\"disabled\":false,\"alias\":null,\"type\":\"phrase\",\"key\":\"coin\",\"value\":\"ETH\"},\"query\":{\"match\":{\"coin\":{\"query\":\"ETH\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}]}"
       }
     }
   },
