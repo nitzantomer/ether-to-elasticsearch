@@ -97,13 +97,8 @@ export async function processBlock(block: number | Block): Promise<ProcessedTran
 	console.log(`analizying block #${ block.number }`);
 
 	const originalTransactions = block.transactions;
-
-	if (originalTransactions.length === 0) {
-		console.log("\tno transactions");
-		return;
-	}
-
 	const date = new Date(block.timestamp * 1000).toISOString();
+
 	console.log(`\tcontaining ${ originalTransactions.length } transactions`);
 
 	return originalTransactions.map(transaction => processTransaction(transaction, date));

@@ -32,6 +32,10 @@ function createBulkEntry(transaction: ProcessedTransaction): [BulkEntryIndex, Pr
 }
 
 function postTransactions(transactions: ProcessedTransaction[]) {
+  if (transactions.length === 0) {
+    console.log("\tempty block - skipping");
+    return;
+  }
 	const bulkBody = transactions
 		.map(createBulkEntry)
 		.reduce((a, b) => a.concat(b), []);
