@@ -48,20 +48,6 @@ function postTransactions(transactions: ProcessedTransaction[]) {
 	});
 }
 
-async function processBlocks(start: number, end: number) {
-	const transactions = [] as ProcessedTransaction[];
-
-	for (let i = start; i < end; i++) {
-		try {
-			transactions.push(...await processBlock(i));
-		} catch (e) {
-			console.log("failed to retrieve last block: ", getErrorMessage(e));
-		}
-	}
-
-	return transactions;
-}
-
 commander
 	.version(VERSION)
 	.option("--start-block [number]", "The block number to start with")
@@ -91,7 +77,7 @@ async function iterator(current: number, end: number | null): Promise<number> {
 	end = Math.min(latestBlockNumber, end || latestBlockNumber);
 	while (current <= end) {
 		try {
-			await processBlock(current);
+			postTransactions(await processBlock(current));
 			current++;
 		} catch (e) {
 			console.log(`failed to retrieve last block: ${ getErrorMessage(e) }`);
