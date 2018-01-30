@@ -2,6 +2,8 @@
 
 A node program for dumping ethereum data into  elasticsearch.
 
+A detailed explenation can be found here: [Ethereum Insights with Elasticsearch and Kibana](https://medium.com/kin-contributors/ethereum-insights-with-elasticsearch-and-kibana-669f020fda87).
+
 ## Running
 Currently not in npm, so first clone/fork this repo and then:
 
